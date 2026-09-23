@@ -225,7 +225,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 8.126808
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -250,7 +250,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: -3.01, y: 0.61, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8482,7 +8482,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
+  m_VoxelSize: 0.06666667
   m_BuildHeightMesh: 0
   m_MinRegionArea: 0
   m_HideEditorLogs: 0
@@ -8744,7 +8744,6 @@ GameObject:
   - component: {fileID: 1304017846}
   - component: {fileID: 1304017845}
   - component: {fileID: 1304017850}
-  - component: {fileID: 1304017851}
   m_Layer: 7
   m_Name: Enemy1
   m_TagString: Enemy1
@@ -8883,7 +8882,7 @@ Transform:
   m_GameObject: {fileID: 1304017844}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -16.64, y: -3.04, z: 0}
+  m_LocalPosition: {x: -4.51, y: -0.46, z: 0}
   m_LocalScale: {x: 0.8842, y: 0.8842, z: 0.8842}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8901,33 +8900,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12ee3e08be625de48a4415662578cd0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy1
-  moveSpeed: 2
-  minMoveTime: 1
-  maxMoveTime: 5
-  minIdleTime: 0.5
-  maxIdleTime: 1.5
---- !u!195 &1304017851
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1304017844}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 1.6999999
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2.4999998
-  m_BaseOffset: 1.2499999
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  player: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  patrolSpeed: 1.5
+  chaseSpeed: 3
+  searchSpeed: 1.5
+  idleTime: 1.5
+  patrolDistanceMin: 2
+  patrolDistanceMax: 5
+  destinationTolerance: 0.1
+  attackDistance: 1.2
+  attackCooldown: 1.2
+  attackDamage: 1
+  searchTime: 4
+  maxHealth: 3
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 0
+  showDebug: 1
+  detectionDistance: 6
+  viewAngle: 120
 --- !u!1 &2068894013
 GameObject:
   m_ObjectHideFlags: 0
