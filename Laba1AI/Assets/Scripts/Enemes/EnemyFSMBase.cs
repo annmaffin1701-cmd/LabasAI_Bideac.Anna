@@ -188,22 +188,17 @@ public abstract class EnemyFSMBase : MonoBehaviour
                 break;
         }
     }
-
-
-    // =====================================================
     // IDLE
-    // =====================================================
-
     private void UpdateIdle()
     {
-        // I -> close -> A
+        // I to close to A
         if (CanAttackPlayer())
         {
             ChangeState(State.Attack);
             return;
         }
 
-        // I -> see -> C
+        // I to see to C
         if (DetectPlayer())
         {
             RememberPlayerPosition();
@@ -214,28 +209,23 @@ public abstract class EnemyFSMBase : MonoBehaviour
 
         stateTimer -= Time.deltaTime;
 
-        // I -> init -> P
+        // I to init to P
         if (stateTimer <= 0f)
         {
             ChangeState(State.Patrol);
         }
     }
-
-
-    // =====================================================
     // PATROL
-    // =====================================================
-
     private void UpdatePatrol()
     {
-        // P -> close -> A
+        // P to close to A
         if (CanAttackPlayer())
         {
             ChangeState(State.Attack);
             return;
         }
 
-        // P -> see -> C
+        // P to see to C
         if (DetectPlayer())
         {
             RememberPlayerPosition();
@@ -255,25 +245,20 @@ public abstract class EnemyFSMBase : MonoBehaviour
             ChangeState(State.Idle);
         }
     }
-
-
-    // =====================================================
     // CHASE
-    // =====================================================
-
     private void UpdateChase()
     {
         if (player == null)
             return;
 
-        // C -> close -> A
+        // C to close to A
         if (CanAttackPlayer())
         {
             ChangeState(State.Attack);
             return;
         }
 
-        // C -> lost -> S
+        // C to lost to S
         if (!CanStillTrackPlayer())
         {
             ChangeState(State.Search);
@@ -282,39 +267,34 @@ public abstract class EnemyFSMBase : MonoBehaviour
 
         RememberPlayerPosition();
 
-        // Только специальный враг
-        // C -> activate -> T
+        // Только для телепорта
+        // C to activate to T
         if (ShouldTeleport())
         {
             ChangeState(State.Teleport);
         }
     }
-
-
-    // =====================================================
     // ATTACK
-    // =====================================================
-
     private void UpdateAttack()
     {
         if (player == null)
             return;
 
-        // A -> lost -> S
+        // A to lost to S
         if (!CanStillTrackPlayer())
         {
             ChangeState(State.Search);
             return;
         }
 
-        // A -> see -> C
+        // A to see to C
         if (!CanAttackPlayer())
         {
             ChangeState(State.Chase);
             return;
         }
 
-        // A -> aim -> A
+        // A to aim to A
         if (attackTimer <= 0f)
         {
             AttackPlayer();
@@ -322,22 +302,17 @@ public abstract class EnemyFSMBase : MonoBehaviour
             attackTimer = attackCooldown;
         }
     }
-
-
-    // =====================================================
     // SEARCH
-    // =====================================================
-
     private void UpdateSearch()
     {
-        // S -> close -> A
+        // S to close to A
         if (CanAttackPlayer())
         {
             ChangeState(State.Attack);
             return;
         }
 
-        // S -> see -> C
+        // S to see to C
         if (DetectPlayer())
         {
             RememberPlayerPosition();
@@ -348,18 +323,13 @@ public abstract class EnemyFSMBase : MonoBehaviour
 
         stateTimer -= Time.deltaTime;
 
-        // S -> timeout -> P
+        // S to timeout to P
         if (stateTimer <= 0f)
         {
             ChangeState(State.Patrol);
         }
     }
-
-
-    // =====================================================
     // TELEPORT
-    // =====================================================
-
     private void UpdateTeleport()
     {
         PerformTeleport();
@@ -375,12 +345,7 @@ public abstract class EnemyFSMBase : MonoBehaviour
             ChangeState(State.Search);
         }
     }
-
-
-    // =====================================================
     // STATES
-    // =====================================================
-
     protected void ChangeState(State newState)
     {
         if (currentState == newState)
@@ -433,12 +398,7 @@ public abstract class EnemyFSMBase : MonoBehaviour
             );
         }
     }
-
-
-    // =====================================================
     // PATROL
-    // =====================================================
-
     private void CreatePatrolPosition()
     {
         patrolPosition =
@@ -450,11 +410,7 @@ public abstract class EnemyFSMBase : MonoBehaviour
             );
     }
 
-
-    // =====================================================
     // MOVEMENT
-    // =====================================================
-
     protected void MoveTo(
         Vector2 target,
         float speed
@@ -501,12 +457,7 @@ public abstract class EnemyFSMBase : MonoBehaviour
         else if (direction.x < -0.05f)
             spriteRenderer.flipX = true;
     }
-
-
-    // =====================================================
     // PLAYER
-    // =====================================================
-
     private void RememberPlayerPosition()
     {
         if (player != null)
@@ -554,11 +505,7 @@ public abstract class EnemyFSMBase : MonoBehaviour
             GetPlayerDistance() <= attackDistance &&
             HasLineOfSight();
     }
-
-
-    // =====================================================
     // ATTACK
-    // =====================================================
 
     private void AttackPlayer()
     {
@@ -587,12 +534,7 @@ public abstract class EnemyFSMBase : MonoBehaviour
         if (currentState != State.Dead)
             spriteRenderer.color = originalColor;
     }
-
-
-    // =====================================================
     // DAMAGE
-    // =====================================================
-
     public void TakeDamage(int damage)
     {
         if (currentState == State.Dead)
@@ -640,12 +582,7 @@ public abstract class EnemyFSMBase : MonoBehaviour
         if (col != null)
             col.enabled = false;
     }
-
-
-    // =====================================================
     // METHODS FOR CHILD ENEMIES
-    // =====================================================
-
     protected abstract bool DetectPlayer();
 
     protected abstract bool CanStillTrackPlayer();
@@ -665,12 +602,7 @@ public abstract class EnemyFSMBase : MonoBehaviour
     protected virtual void TickSpecial(float deltaTime)
     {
     }
-
-
-    // =====================================================
     // VISUAL DEBUG
-    // =====================================================
-
     private void OnGUI()
     {
         if (!showDebug)

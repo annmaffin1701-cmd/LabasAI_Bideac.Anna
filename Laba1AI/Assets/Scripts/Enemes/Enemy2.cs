@@ -2,10 +2,7 @@ using UnityEngine;
 
 public class Enemy2 : EnemyFSMBase
 {
-    // =====================================================
     // 360 SCAN
-    // =====================================================
-
     [Header("360 Scan")]
 
     [Tooltip("Радиус обнаружения игрока")]
@@ -15,23 +12,13 @@ public class Enemy2 : EnemyFSMBase
     [Tooltip("Как часто выполнять проверку обнаружения")]
     [SerializeField]
     private float scanInterval = 0.15f;
-
-
-    // =====================================================
     // TRACKING
-    // =====================================================
-
     [Header("Tracking")]
 
     [Tooltip("Максимальная дистанция, на которой враг продолжает преследование")]
     [SerializeField]
     private float trackingDistance = 14f;
-
-
-    // =====================================================
     // TELEPORT
-    // =====================================================
-
     [Header("Teleport")]
 
     [Tooltip("Перезарядка телепорта")]
@@ -69,30 +56,15 @@ public class Enemy2 : EnemyFSMBase
     [Tooltip("Необязательная область, внутри которой разрешён телепорт")]
     [SerializeField]
     private Collider2D teleportArea;
-
-
-    // =====================================================
     // DEBUG
-    // =====================================================
-
     [Header("Debug")]
 
     [SerializeField]
     private bool showTeleportDebug = true;
-
-
-    // =====================================================
     // PRIVATE
-    // =====================================================
-
     private float scanTimer;
     private float teleportTimer;
-
-
-    // =====================================================
     // START
-    // =====================================================
-
     protected override void Start()
     {
         base.Start();
@@ -104,12 +76,7 @@ public class Enemy2 : EnemyFSMBase
         // teleportTimer = teleportCooldown;
         teleportTimer = 0f;
     }
-
-
-    // =====================================================
     // SPECIAL TICK
-    // =====================================================
-
     protected override void TickSpecial(float deltaTime)
     {
         if (scanTimer > 0f)
@@ -122,12 +89,7 @@ public class Enemy2 : EnemyFSMBase
             teleportTimer -= deltaTime;
         }
     }
-
-
-    // =====================================================
     // PLAYER DETECTION
-    // =====================================================
-
     protected override bool DetectPlayer()
     {
         if (player == null)
@@ -157,12 +119,7 @@ public class Enemy2 : EnemyFSMBase
 
         return true;
     }
-
-
-    // =====================================================
     // TRACK PLAYER
-    // =====================================================
-
     protected override bool CanStillTrackPlayer()
     {
         if (player == null)
@@ -184,12 +141,7 @@ public class Enemy2 : EnemyFSMBase
 
         return true;
     }
-
-
-    // =====================================================
     // SHOULD TELEPORT
-    // =====================================================
-
     protected override bool ShouldTeleport()
     {
         if (player == null)
@@ -219,12 +171,7 @@ public class Enemy2 : EnemyFSMBase
 
         return true;
     }
-
-
-    // =====================================================
     // PERFORM TELEPORT
-    // =====================================================
-
     protected override void PerformTeleport()
     {
         if (player == null)
@@ -249,11 +196,7 @@ public class Enemy2 : EnemyFSMBase
         int rejectedByDistance = 0;
         int rejectedByArea = 0;
         int rejectedByObstacle = 0;
-
-
-        // =================================================
         // FIND POSITION
-        // =================================================
 
         for (int i = 0; i < teleportAttempts; i++)
         {
@@ -285,11 +228,7 @@ public class Enemy2 : EnemyFSMBase
             Vector2 candidate =
                 playerPosition +
                 direction * distanceFromPlayer;
-
-
-            // =================================================
             // CHECK MAX TELEPORT DISTANCE
-            // =================================================
 
             if (teleportMaxDistance > 0f)
             {
@@ -307,12 +246,7 @@ public class Enemy2 : EnemyFSMBase
                     continue;
                 }
             }
-
-
-            // =================================================
             // CHECK TELEPORT AREA
-            // =================================================
-
             if (teleportArea != null)
             {
                 if (!teleportArea.OverlapPoint(candidate))
@@ -321,11 +255,7 @@ public class Enemy2 : EnemyFSMBase
                     continue;
                 }
             }
-
-
-            // =================================================
             // CHECK OBSTACLE
-            // =================================================
 
             Collider2D obstacle =
                 Physics2D.OverlapCircle(
@@ -352,12 +282,7 @@ public class Enemy2 : EnemyFSMBase
 
                 continue;
             }
-
-
-            // =================================================
             // POSITION IS VALID
-            // =================================================
-
             float actualDistanceToPlayer =
                 Vector2.Distance(
                     candidate,
@@ -389,12 +314,7 @@ public class Enemy2 : EnemyFSMBase
                 foundPosition = true;
             }
         }
-
-
-        // =====================================================
         // APPLY TELEPORT
-        // =====================================================
-
         if (foundPosition)
         {
             Vector2 oldPosition = rb.position;
@@ -418,11 +338,7 @@ public class Enemy2 : EnemyFSMBase
                 );
             }
         }
-
-        // =====================================================
         // FAILED
-        // =====================================================
-
         else
         {
             Debug.LogWarning(
@@ -439,54 +355,31 @@ public class Enemy2 : EnemyFSMBase
         // Запускаем cooldown
         teleportTimer = teleportCooldown;
     }
-
-
-    // =====================================================
     // DEBUG GIZMOS
-    // =====================================================
-
     protected override void DrawExtraGizmos()
     {
-        // =================================================
         // DETECTION
-        // =================================================
-
         Gizmos.color = Color.magenta;
 
         Gizmos.DrawWireSphere(
             transform.position,
             scanRadius
         );
-
-
-        // =================================================
         // TRACKING DISTANCE
-        // =================================================
-
         Gizmos.color = Color.cyan;
 
         Gizmos.DrawWireSphere(
             transform.position,
             trackingDistance
         );
-
-
-        // =================================================
         // TELEPORT TRIGGER
-        // =================================================
-
         Gizmos.color = Color.yellow;
 
         Gizmos.DrawWireSphere(
             transform.position,
             teleportTriggerDistance
         );
-
-
-        // =================================================
         // MAX TELEPORT DISTANCE
-        // =================================================
-
         if (teleportMaxDistance > 0f)
         {
             Gizmos.color = Color.blue;
@@ -496,12 +389,7 @@ public class Enemy2 : EnemyFSMBase
                 teleportMaxDistance
             );
         }
-
-
-        // =================================================
         // PLAYER TELEPORT AREA
-        // =================================================
-
         if (player != null)
         {
             // Минимальная дистанция появления
