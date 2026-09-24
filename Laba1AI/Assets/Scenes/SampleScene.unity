@@ -420,7 +420,7 @@ TilemapRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -8786,6 +8786,8 @@ GameObject:
   - component: {fileID: 1208884777}
   - component: {fileID: 1208884776}
   - component: {fileID: 1208884778}
+  - component: {fileID: 1208884780}
+  - component: {fileID: 1208884779}
   m_Layer: 6
   m_Name: player
   m_TagString: Player
@@ -8892,7 +8894,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &1208884777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8943,6 +8945,38 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.03403268}
   m_Size: {x: 2.11, y: 2.338066}
   m_Direction: 0
+--- !u!114 &1208884779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1208884773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2089c02ba44de014aaf49cda531a973e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
+  maxHealth: 5
+  spriteRenderer: {fileID: 1208884774}
+--- !u!114 &1208884780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1208884773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bf6f3b5edb5dd04b909318084f14fa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
+  attackRadius: 1.2
+  attackDamage: 5
+  attackCooldown: 0.4
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 384
 --- !u!1 &1245345837
 GameObject:
   m_ObjectHideFlags: 0
@@ -8956,6 +8990,7 @@ GameObject:
   - component: {fileID: 1245345840}
   - component: {fileID: 1245345839}
   - component: {fileID: 1245345843}
+  - component: {fileID: 1245345844}
   m_Layer: 8
   m_Name: Enemy2
   m_TagString: Enemy2
@@ -9073,7 +9108,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 6396c4ba574884a30a240729803d3903, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -9112,16 +9147,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 088d022f03257e143acaf15786f75824, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy2
-  player: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  patrolSpeed: 2
+  player: {fileID: 1208884775}
+  spriteRenderer: {fileID: 1208884774}
+  patrolSpeed: 1.5
   chaseSpeed: 3
-  searchSpeed: 2
-  idleTime: 1
+  searchSpeed: 1.5
+  idleTime: 1.5
   patrolDistanceMin: 2
-  patrolDistanceMax: 5
-  destinationTolerance: 0.1
-  attackDistance: 1.5
+  patrolDistanceMax: 10
+  destinationTolerance: 0.2
+  attackDistance: 1.2
   attackCooldown: 1
   attackDamage: 1
   searchTime: 4
@@ -9130,16 +9165,34 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   showDebug: 1
-  scanRadius: 1
-  scanInterval: 0.5
-  trackingDistance: 8
-  teleportCooldown: 5
-  teleportTriggerDistance: 2
-  teleportMaxDistance: 10
-  teleportMinPlayerDistance: 1.5
-  teleportMaxPlayerDistance: 2.5
+  scanRadius: 21.69
+  scanInterval: 13.89
+  trackingDistance: 12.09
+  teleportCooldown: 1
+  teleportTriggerDistance: 7.69
+  teleportMaxDistance: 27.2
+  teleportMinPlayerDistance: 1.74
+  teleportMaxPlayerDistance: 3.18
   teleportSafeRadius: 0.5
-  teleportArea: {fileID: 1245345840}
+  teleportAttempts: 32
+  teleportArea: {fileID: 0}
+  showTeleportDebug: 1
+--- !u!114 &1245345844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1245345837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b38f5d9a60fc7af43be3b3301d77e79c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ProximityHealth
+  lives: 5
+  damageDistance: 1.5
+  damageInterval: 1
+  redFlashTime: 0.15
 --- !u!1 &1304017844
 GameObject:
   m_ObjectHideFlags: 0
@@ -9153,6 +9206,7 @@ GameObject:
   - component: {fileID: 1304017846}
   - component: {fileID: 1304017845}
   - component: {fileID: 1304017850}
+  - component: {fileID: 1304017851}
   m_Layer: 7
   m_Name: Enemy1
   m_TagString: Enemy1
@@ -9270,7 +9324,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 229e469bd64e84b13bf47f7c898292cd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -9329,6 +9383,22 @@ MonoBehaviour:
   showDebug: 1
   detectionDistance: 6
   viewAngle: 120
+--- !u!114 &1304017851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1304017844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b38f5d9a60fc7af43be3b3301d77e79c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ProximityHealth
+  lives: 5
+  damageDistance: 1.5
+  damageInterval: 1
+  redFlashTime: 0.15
 --- !u!1 &2068894013
 GameObject:
   m_ObjectHideFlags: 0
