@@ -13,10 +13,10 @@ constexpr int HEURISTIC_SCORE = 10;
 
 struct GameState {
     int remainingTeeth;
-    bool aiTurn;  // true - сейчас ходит ИИ
+    bool aiTurn;  // Ход ИИ
 };
 
-// ---------- Правила игры ----------
+//Правила 
 
 std::vector<int> getValidMoves(const GameState& state) {
     std::vector<int> moves;
@@ -47,7 +47,7 @@ int evaluate(const GameState& state) {
     return goodForAi ? HEURISTIC_SCORE : -HEURISTIC_SCORE;
 }
 
-// ---------- ИИ ----------
+// ИИ 
 
 int minimax(const GameState& state, int depth, bool isMaximizing, long long& nodes) {
     ++nodes;
@@ -89,7 +89,7 @@ int chooseBestMove(const GameState& state) {
     return bestMove;
 }
 
-// ---------- Ввод / вывод ----------
+//  Ввод / вывод 
 
 int readChoice(int minValue, int maxValue) {
     while (true) {
@@ -110,7 +110,7 @@ int readChoice(int minValue, int maxValue) {
 }
 
 void printMouth(const GameState& state) {
-    std::cout << "\n      CROCODILE'S MOUTH\n"
+    std::cout << "\n      CROCODILE'S MOUTH:\n"
               << "   /-----------------------\\\n"
               << "  | ";
     for (int i = 0; i < INITIAL_TEETH; ++i) {
@@ -131,17 +131,17 @@ void printResult(const GameState& state) {
     // На конце игры aiTurn == true значит последний зуб нажал человек.
     if (state.aiTurn) {
         std::cout << "\nThe crocodile bites! You pressed the last tooth.\n"
-                  << "YOU LOSE. AI WINS.\n";
+                  << "YOU LOSE. AI WINS!!! HAHAHAH\n";
     } else {
         std::cout << "\nThe crocodile bites the AI! It pressed the last tooth.\n"
-                  << "-------YOU WIN. AI LOSES.-------\n";
+                  << "YOU WIN. AI LOSES!!!\n";
     }
 }
 
-// ---------- Main ----------
+// Main 
 
 int main() {
-    std::cout << "CROCODILE TEETH - MINIMAX\n"
+    std::cout << "CROCODILE TEETH.\n"
               << "There are " << INITIAL_TEETH << " teeth. Press 1 or 2 teeth per turn.\n"
               << "Whoever presses the LAST tooth LOSES.\n\n"
               << "Who plays first? 1 - You, 2 - AI: ";
