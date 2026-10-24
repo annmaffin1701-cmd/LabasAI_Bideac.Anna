@@ -121,6 +121,7 @@ void printMouth(const GameState& state) {
               << "Teeth left: " << state.remainingTeeth << '\n';
 }
 
+
 int askPlayerMove(const GameState& state) {
     const int maxMove = std::min(MAX_MOVE, state.remainingTeeth);
     std::cout << "Your turn. Press 1" << (maxMove == 2 ? " or 2" : "") << " tooth/teeth: ";
@@ -142,27 +143,59 @@ void printResult(const GameState& state) {
 
 int main() {
     std::cout << "CROCODILE TEETH.\n"
-              << "There are " << INITIAL_TEETH << " teeth. Press 1 or 2 teeth per turn.\n"
+              << "There are " << INITIAL_TEETH
+              << " teeth. Press 1 or 2 teeth per turn.\n"
               << "Whoever presses the LAST tooth LOSES.\n\n"
               << "Who plays first? 1 - You, 2 - AI: ";
 
-    GameState state{INITIAL_TEETH, readChoice(1, 2) == 2};
+    bool aiStarts = readChoice(1, 2) == 2;
 
-    while (!isTerminal(state)) {
-        printMouth(state);
+    while (true) {
+        // Начало новой партии
+        GameState state{INITIAL_TEETH, aiStarts};
 
-        int move;
-        if (state.aiTurn) {
-            move = chooseBestMove(state);
-            std::cout << "AI presses " << move << " tooth/teeth.\n";
-        } else {
-            move = askPlayerMove(state);
-            std::cout << "You press " << move << " tooth/teeth.\n";
+        std::cout << "\n NEW GAME \n"
+                  << "First turn: "
+                  << (aiStarts ? "AI" : "You") << "\n";
+
+        // Основной игровой цикл
+        while (!isTerminal(state)) {
+            printMouth(state);
+
+            int move;
+
+            if (state.aiTurn) {
+                move = chooseBestMove(state);
+
+                std::cout << "AI presses " << move
+                          << " tooth/teeth.\n";
+            } else {
+                move = askPlayerMove(state);
+
+                std::cout << "You press " << move
+                          << " tooth/teeth.\n";
+            }
+
+            state = applyMove(state, move);
         }
-        state = applyMove(state, move);
+
+        printMouth(state);
+        printResult(state);
+
+        // Предложение начать новую партию
+        std::cout << "\nPlay again? 1 - Yes, 2 - No,exit: ";
+
+        int restart = readChoice(1, 2);
+
+        if (restart == 2) {
+            std::cout << "Thanks for playing!\n";
+            break;
+        }
+
+        // Меняем первого игрока для следующей партии
+        aiStarts = !aiStarts;
     }
 
-    printMouth(state);
-    printResult(state);
+
     return 0;
 }
