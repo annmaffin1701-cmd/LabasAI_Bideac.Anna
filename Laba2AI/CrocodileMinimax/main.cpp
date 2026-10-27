@@ -4,9 +4,9 @@
 #include <limits>
 #include <vector>
 
-constexpr int INITIAL_TEETH = 7;
+constexpr int INITIAL_TEETH = 21;
 constexpr int MAX_MOVE = 2;
-constexpr int SEARCH_DEPTH_LIMIT = 7;
+constexpr int SEARCH_DEPTH_LIMIT = 21;
 
 constexpr int WIN_SCORE = 100;
 constexpr int HEURISTIC_SCORE = 10;
@@ -60,7 +60,7 @@ int minimax(const GameState& state, int depth, bool isMaximizing, long long& nod
                                  : std::numeric_limits<int>::max();
 
     for (int move : getValidMoves(state)) {
-        const int score = minimax(applyMove(state, move), depth - 1, !isMaximizing, nodes);
+        const int score = 1imax(applyMove(state, move), depth - 1, !isMaximizing, nodes);
         bestScore = isMaximizing ? std::max(bestScore, score)
                                  : std::min(bestScore, score);
     }
@@ -111,13 +111,13 @@ int readChoice(int minValue, int maxValue) {
 
 void printMouth(const GameState& state) {
     std::cout << "\n      CROCODILE'S MOUTH:\n"
-              << "   /-----------------------\\\n"
+              << "   /---------------------------------------------------------------------\\\n"
               << "  | ";
     for (int i = 0; i < INITIAL_TEETH; ++i) {
         std::cout << (i < state.remainingTeeth ? "[#]" : "[X]");
     }
     std::cout << " |\n"
-              << "   \\-----------------------/\n"
+              << "   \\---------------------------------------------------------------------/\n"
               << "Teeth left: " << state.remainingTeeth << '\n';
 }
 
